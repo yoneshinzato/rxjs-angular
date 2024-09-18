@@ -30,9 +30,13 @@ export class HomeComponent implements OnInit {
   }
 
   reloadCourses() {
+    this.loadingService.loadingOn();
+
     const courses$ = this.coursesService.loadAllCourses()
       .pipe(
         map(courses => courses.sort(sortCoursesBySeqNo)),
+        // finalize is called when the observable completes or emits an error
+        finalize(() => this.loadingService.loadingOff())
       )
     this.beginnerCourses$ = courses$.pipe(
       map(courses => courses.filter(course => course.category == 'BEGINNER'))
