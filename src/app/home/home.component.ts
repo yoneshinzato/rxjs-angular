@@ -19,7 +19,11 @@ export class HomeComponent implements OnInit {
   beginnerCourses$: Observable<Course[]>;
   advancedCourses$: Observable<Course[]>;
 
-  constructor(private coursesService: CoursesService, private loadingService: LoadingService) {}
+  constructor(
+    private coursesService: CoursesService, 
+    private loadingService: LoadingService
+
+  ) {}
 
   ngOnInit() {
     this.reloadCourses();
