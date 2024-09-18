@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { concatMap, finalize, tap } from 'rxjs/operators';
 
 @Injectable()
 export class LoadingService {
@@ -13,7 +14,13 @@ export class LoadingService {
   constructor() { }
 
   showLoaderUntilCompleted<T>(obs$: Observable<T>): Observable<T> {
-    return undefined;
+    // of emits null and complete immediately, created just to create an observable chain
+    return of(null).pipe(
+      tap(() => this.loadingOn()),
+      // transform the value of into a new observable
+      concatMap(() => obs$),
+      finalize(() => this.loadingOff())
+    )
   }
 
   loadingOn() {
