@@ -9,7 +9,7 @@ import {tap} from 'rxjs/operators';
   styleUrls: ['./messages.component.css']
 })
 export class MessagesComponent implements OnInit {
-  showMEssages = false;
+  showMessages = false;
 
   constructor() {
 
@@ -22,7 +22,7 @@ export class MessagesComponent implements OnInit {
 
 
   onClose() {
-    this.showMEssages = false;
+    this.showMessages = false;
 
   }
 
