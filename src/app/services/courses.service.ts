@@ -11,6 +11,28 @@ import { Lesson } from '../model/lesson';
 export class CoursesService {
 
   constructor(private http: HttpClient) { }
+
+  loadCourseById(courseId: number): Observable<Course> {
+    return this.http.get<Course>(`/api/courses/${courseId}`)
+      .pipe(
+        shareReplay()
+      )
+  }
+
+  loadAllCourseLessons(courseId: number): Observable<Lesson[]> {
+    return this.http.get<Lesson[]>('/api/lessons', {
+      params: {
+        pageSize: "10000",
+        courseId: courseId.toString(),
+        
+      }
+    })
+      .pipe(
+        map(res => res["payload"]),
+        shareReplay()
+      )
+  }
+
 // service layer return only observables to the view layer. it is stateless, does not hold app data
   loadAllCourses(): Observable<Course[]> {
     return this.http.get<Course[]>('/api/courses')
