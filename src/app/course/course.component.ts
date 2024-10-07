@@ -43,9 +43,17 @@ export class CourseComponent implements OnInit {
   ngOnInit() {
 
     const courseId = parseInt(this.route.snapshot.paramMap.get("courseId"))
-    const course$ = this.coursesService.loadCourseById(courseId);
-    const lessons$ = this.coursesService.loadAllCourseLessons(courseId);
+    // startWith to improve UX behavior
+    const course$ = this.coursesService.loadCourseById(courseId)
+      .pipe(
+        startWith(null),
+      );
+    const lessons$ = this.coursesService.loadAllCourseLessons(courseId)
+    .pipe(
+      startWith([]),
+    );
     // whenever on of these observables emits a value  it emits that value, all data is emitted, course and lessons
+    // 
     this.data$ = combineLatest([course$, lessons$])
       .pipe(
         map(([course, lessons] )=> {
